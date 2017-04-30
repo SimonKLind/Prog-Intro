@@ -40,4 +40,14 @@ int main(){
 	variable = variable+1;
 	/* We can even use the variable itself when assigning a value
 	 * so now variable will hold 6 instead of 5 */
+
+
+	cout << "Enter an integer: ";
+	cin >> variable;
+	cout << "You entered: " << variable << endl;
+	/* This 'cin' can be used to get input from the keyboard.
+	 * Cin will pause the program, until the user enters something
+	 * into the terminal window, and presses enter.
+	 * Wheterver was enterd will be stored int variable.
+	 * Note the opposite facing >> */
 }
