@@ -57,43 +57,48 @@ public:
 	}
 };
 
+/* ----- Här har vi SmartPlayer klassen... ----- */ 
 class SmartPlayer: public Spelare{
 	int EDGE = 1;
 	int CORNER = 3;
 	int CENTER = 5;
 	int WIN = 15;
 	int LOSS = 10;
-
+	// Lite weights som den använder för att proiritera olika positioner
 public:
 
 	SmartPlayer(string n, int v): Spelare(n, v){}
 
+	/* Denna metod går ut på att utvärdera varje ledig position på brädet
+	 * och ge positionerna ett score beroende på hur "bra" positionen är.
+	 * Den med högst score väljs */
 	void play(int *board){
 		int max = 0, choice = -1;
-		for(int i=0, score; i<9; ++i){
-			if(board[i] == 0){
-				score = 0;
-				score += getPieceScore(board, i);
-				board[i] = value;
-				if(win(board)) score += WIN;
-				value = -value;
-				board[i] = value;
-				if(win(board)) score += LOSS;
-				value = -value;
-				board[i] = 0;
-				if(score > max){
+		for(int i=0, score; i<9; ++i){ // Loop through positions 1-9
+			if(board[i] == 0){ // If it's empty...
+				score = 0; // Set score = 0
+				score += getPieceScore(board, i); // Add score associated with type of position
+				board[i] = value; // Set piece to own value
+				if(win(board)) score += WIN; // If win, add win score
+				value = -value; // Invert value to check if opponent wins
+				board[i] = value; // Set to (opponents) value
+				if(win(board)) score += LOSS; // if (opponent) win, add loss score
+				value = -value; // Invert back to own score
+				board[i] = 0; // Reset position
+				if(score > max){ // Check if score higher than max
 					max = score;
 					choice = i;
 				}
 			}
 		}
-		board[choice] = value;
+		board[choice] = value; // Set chosen piece
 	}
 
+	// Returns the score for whatever type of position index is
 	int getPieceScore(int *board, int index){
-		if(index == 4) return CENTER;
-		else if(index%2 == 0) return CORNER;
-		else return EDGE;
+		if(index == 4) return CENTER; // 4 = center position
+		else if(index%2 == 0) return CORNER; // All even indices that are not 4 = corner
+		else return EDGE; // else edge
 	}
 };
 
